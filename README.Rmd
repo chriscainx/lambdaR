@@ -1,0 +1,141 @@
+---
+title: "lambdaR - Lambda expressions in R"
+author: "Koji MAKIYAMA"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Overview
+
+With this package, you can use lambda expressions in R:
+
+```{r}
+library(lambdaR)
+library(dplyr)
+1:10 %>% Filter_(x: x %% 2 == 0) %>% Map_(x: x ** 2) %>% Reduce_(x,y: x + y)
+```
+
+You can use placeholders:
+
+```{r}
+1:10 %>% Filter_(._ %% 2 == 0) %>% Map_(._ ** 2) %>% Reduce_(._ + ._)
+```
+
+And you can write like below:
+
+```{r}
+is_even <- lambda(._ %% 2 == 0)
+square <- lambda(._ ** 2)
+add <- lambda(._ + ._)
+1:10 %>% Filter_(is_even) %>% Map_(square) %>% Reduce_(add)
+```
+
+## How to install
+
+```{r, eval=FALSE}
+install.packages("devtools") # if you have not installed "devtools" package
+devtools::install_github("hoxo-m/lambdaR")
+```
+
+## Usage
+
+### lambda()
+
+`lambda()` function is to enable using lambda expressions in R:
+
+```{r}
+increment <- lambda(x: x + 1)
+add <- lambda(x,y: x + y)
+```
+
+That allows to redefine higher order functions using lambda expressions.
+
+### Application
+
+We redefined higher order functions:
+
+- `Filter()` to `Filter_()`
+- `Map()` to `Map_()`
+- `Reduce()` to `Reduce_()`
+- `Find()` to `Find_()`
+- `Position()` to `Position_()`
+- `Negate()` to `Negate_()`
+
+You can input lambda expressions to these functions:
+
+#### Filter_()
+
+```{r}
+1:10 %>% Filter_(x: x %% 2 == 0)
+```
+
+#### Map_()
+
+```{r}
+1:10 %>% Map_(x: x ** 2) %>% unlist
+```
+
+```{r}
+list(1:5, 6:10) %>% Map2_(x,y: x + y) %>% unlist
+```
+
+#### Reduce_()
+
+```{r}
+1:10 %>% Reduce_(x,y: x + y)
+```
+
+#### Find_()
+
+```{r}
+LETTERS %>% Find_(x: tolower(x) == "f")
+```
+
+#### Position_()
+
+```{r}
+LETTERS %>% Position_(x: x == "F")
+```
+
+#### Negate_()
+
+```{r}
+1:10 %>% Filter_(Negate_(x: x %% 2 == 0))
+```
+
+#### placeholders
+
+And also you can use placeholders:
+
+```{r}
+1:10 %>% Filter_(._ %% 2 == 0)
+```
+
+```{r}
+1:10 %>% Map_(._ ** 2) %>% unlist
+```
+
+```{r}
+list(1:5, 6:10) %>% Map2_(._ + ._) %>% unlist
+```
+
+```{r}
+1:10 %>% Reduce_(._ + ._)
+```
+
+```{r}
+LETTERS %>% Find_(tolower(._) == "f")
+```
+
+```{r}
+LETTERS %>% Position_(._ == "F")
+```
+
+```{r}
+1:10 %>% Filter_(Negate_(._ == 0))
+```
