@@ -1,5 +1,5 @@
 ---
-title: "lambdaR - Lambda expressions in R"
+title: "lambdaR - Novel lambda expressions in R"
 author: "Koji MAKIYAMA"
 output: 
   html_document:
@@ -10,71 +10,114 @@ output:
 knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
 ```
 
-## Overview
+## 1. Overview
 
-With this package, you can use lambda expressions in R:
+In recent years, the concepts of functional programming have widely spread.  
+R also has common higher-order functions in functional programming languages(See [`help(Map)`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/funprog.html) or [excellent article](http://www.johnmyleswhite.com/notebook/2010/09/23/higher-order-functions-in-r/)).
+
+Usagae of the higher-order functions is like below.
+
+```{r}
+# extract even numbers from 1 to 10
+Filter(function(x) x %% 2 == 0, 1:10)
+```
+
+You need to pass a function to higher-order functions.  
+In above, the higher-order function is `Filter` and the passed function is `function(x) x %% 2 == 0`.
+
+In such case, **lambda expressions** is very useful on some other languages.
+Lambda expressions make a function description more concise.
+
+In Python, you can describe a function to pass like `lambda x: x % 2 == 0`.
+
+```python
+# Python - extract even numbers from 1 to 10
+filter(lambda x: x % 2 == 0, range(1, 11))
+```
+
+In Scala, you can describe a function to pass like `x => x % 2 == 0`.
+
+```scala
+// Scala - extract even numbers from 1 to 10
+(1 to 10).filter(x => x % 2 == 0)
+```
+
+In Scala, lambda expressions can be more concise by using placeholders `_`.
+
+```scala
+// Scala - extract even numbers from 1 to 10
+(1 to 10).filter(_ % 2 == 0)
+```
+
+The **lambdaR** packagae is created to provide lambda expressions to R.  
+
+By this package, you can use Python-like lambda expressions in R.
 
 ```{r}
 library(lambdaR)
+Filter_(1:10, x: x %% 2 == 0)
+```
+
+You can also use Scala-like lambda expressions with placeholders `._`.
+
+```{r}
+Filter_(1:10, ._ %% 2 == 0)
+```
+
+By using the pipe operator `%>%` in `dplyr`(or `magrittr`), you can write the code more Scala-like.
+
+```{r}
 library(dplyr)
-1:10 %>% Filter_(x: x %% 2 == 0) %>% Map_(x: x ** 2) %>% Reduce_(x,y: x + y)
+1:10 %>% Filter_(._ %% 2 == 0)
 ```
 
-You can use placeholders:
+## 2. How to install
 
-```{r}
-1:10 %>% Filter_(._ %% 2 == 0) %>% Map_(._ ** 2) %>% Reduce_(._ + ._)
-```
+The source code for `lambdaR` package is available on GitHub at
 
-And you can write like below:
+- https://github.com/hoxo-m/lambdaR
 
-```{r}
-is_even <- lambda(._ %% 2 == 0)
-square <- lambda(._ ** 2)
-add <- lambda(._ + ._)
-1:10 %>% Filter_(is_even) %>% Map_(square) %>% Reduce_(add)
-```
-
-## How to install
+You can install the pakage from there.
 
 ```{r, eval=FALSE}
 install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("hoxo-m/lambdaR")
 ```
 
-## Usage
+## 3. Basic
 
-### lambda()
-
-`lambda()` function is to enable using lambda expressions in R:
+`lambdaR` package provides the `lambda()` function that recieves a lambda expression and returns a function.
 
 ```{r}
 increment <- lambda(x: x + 1)
+increment
 add <- lambda(x,y: x + y)
+add
 ```
 
-That allows to redefine higher order functions using lambda expressions.
+`lambda()` is a very simple function, but we can use it to various applications.  
+`lambda()` allows to redefine higher-order functions to enable using lambda expressions.
 
-### Application
+## 4. Application
 
-We redefined higher order functions:
+We redefined higher-order functions:
 
-- `Filter()` to `Filter_()`
-- `Map()` to `Map_()`
-- `Reduce()` to `Reduce_()`
-- `Find()` to `Find_()`
-- `Position()` to `Position_()`
-- `Negate()` to `Negate_()`
+- `Filter()` to `Filter_()`,
+- `Map()` to `Map_()`,
+- `Reduce()` to `Reduce_()`,
+- `Find()` to `Find_()`,
+- `Position()` to `Position_()`,
+- `Negate()` to `Negate_()`.
 
-You can input lambda expressions to these functions:
+You can input lambda expressions to these functions.
 
-#### Filter_()
+### Filter_()
 
 ```{r}
 1:10 %>% Filter_(x: x %% 2 == 0)
 ```
 
-#### Map_()
+### Map_()
 
 ```{r}
 1:10 %>% Map_(x: x ** 2) %>% unlist
@@ -84,33 +127,39 @@ You can input lambda expressions to these functions:
 list(1:5, 6:10) %>% Map2_(x,y: x + y) %>% unlist
 ```
 
-#### Reduce_()
+### Reduce_()
 
 ```{r}
 1:10 %>% Reduce_(x,y: x + y)
 ```
 
-#### Find_()
+### Find_()
 
 ```{r}
 LETTERS %>% Find_(x: tolower(x) == "f")
 ```
 
-#### Position_()
+### Position_()
 
 ```{r}
 LETTERS %>% Position_(x: x == "F")
 ```
 
-#### Negate_()
+### Negate_()
 
 ```{r}
 1:10 %>% Filter_(Negate_(x: x %% 2 == 0))
 ```
 
-#### placeholders
+### Combination
 
-And also you can use placeholders:
+```{r}
+1:10 %>% Filter_(x: x %% 2 == 0) %>% Map_(x: x ** 2) %>% Reduce_(x,y: x + y)
+```
+
+## 5. Lambda expressions with placeholders
+
+If each of input variables is used only once in a lambda expression, you can describe it more concisely using placeholders `._`.
 
 ```{r}
 1:10 %>% Filter_(._ %% 2 == 0)
@@ -137,5 +186,66 @@ LETTERS %>% Position_(._ == "F")
 ```
 
 ```{r}
-1:10 %>% Filter_(Negate_(._ == 0))
+1:10 %>% Filter_(Negate_(._ %% 2 == 0))
 ```
+
+```{r}
+1:10 %>% Filter_(._ %% 2 == 0) %>% Map_(._ ** 2) %>% Reduce_(._ + ._)
+```
+
+## 6. `lambda()` accepts any functions
+
+If you input a function to `lambda()`, it returns the input function.
+
+```{r}
+identical(lambda(max), max)
+```
+
+It means that the description like below is allowed.
+
+```{r}
+is_even <- lambda(._ %% 2 == 0)
+square <- lambda(._ ** 2)
+# `+` is default add function
+1:10 %>% Filter_(is_even) %>% Map_(square) %>% Reduce_(`+`)
+```
+
+## 7. How to redefine a function
+
+It is very easy to create a function that accepts lambda expressions.  
+For example, let's redefine `Filter()`.
+
+```{r eval=FALSE}
+Filter_ <- function(data, ...) {
+  func <- lambda(...)
+  Filter(func, data)
+}
+```
+
+Lambda expressions in `LambdaR` is implimented by `...`.  
+The `Filter_()` can accept lambda expressions.
+
+## 8. Miscellaneous
+
+### `f_()`
+
+`f_()` is an alias of `lambda()`.
+
+```{r}
+increment <- f_(x: x + 1)
+increment
+add <- f_(x,y: x + y)
+add
+```
+
+### `Mapv_()`
+
+`Mapv_()` is the same action as `Map_()` except retruning a vector instead of a list.  
+That means `Mapv_()` is a shortcut of `unlist(Map_(...))`.
+
+```{r}
+1:3 %>% Map_(x: x ** 2)
+1:3 %>% Mapv_(x: x ** 2)
+```
+
+Of course, there is also `Map2v_()`.
