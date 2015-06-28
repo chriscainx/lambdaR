@@ -10,7 +10,7 @@ lambda <- function(..., envir = parent.frame()) {
   if(args_len == 0) {
     return(eval(parse(text="function() {}"), envir=globalenv()))
   } else if(args_len == 1) {
-    expr <- deparse(args[[1]]$expr)
+    expr <- as.character(as.expression(args[[1]]$expr))
     if(is_default_lambda(expr)) {
       lambda_default(...)
     } else if(is_lambda_placeholder(expr)) {
@@ -44,8 +44,12 @@ is_default_lambda <- function(expr) {
 
 is_lambda_placeholder <- function(expr) {
   contains_placeholders <- stringr::str_detect(expr, pattern = "\\._")
-  expr <- as.character(parse(text = expr)[[1]])
-  contains_placeholders && !stringr::str_detect(expr[1], "_$")
+  tryCatch({
+    expr <- as.character(parse(text = expr)[[1]])
+    contains_placeholders && !stringr::str_detect(expr[1], "_$")    
+  }, error = function(e) {
+    FALSE
+  })
 }
 
 lambda_default <- function(...) {
@@ -55,7 +59,8 @@ lambda_default <- function(...) {
   args <- Map(function(x) x$expr, args)
   vars <- unlist(Map(as.character, head(args, -1)))
   last_arg <- tail(args, 1)[[1]]
-  last_arg <- stringr::str_split(deparse(last_arg), pattern = ":", n = 2)[[1]]
+  last_arg <- as.character(as.expression(last_arg))
+  last_arg <- stringr::str_split(last_arg, pattern = ":", n = 2)[[1]]
   if(length(last_arg) != 2) stop("Invalid lambda expression.")
   vars <- c(vars, last_arg[1])
   vars <- paste(vars, collapse=", ")
@@ -69,7 +74,7 @@ lambda_placeholder <- function(...) {
   if(length(args) == 0) stop("No lambda expression.")
   envir <- args[[1]]$env
   args <- Map(function(x) x$expr, args)
-  expr <- deparse(args[[1]])
+  expr <- as.character(as.expression(args[[1]]))
   var_count <- stringr::str_count(expr, "\\._")
   if(var_count == 0) stop("No placeholders in lambda expression.")
   vars <- paste0("._", seq_len(var_count))
