@@ -454,8 +454,8 @@ add
 
 ### `Mapv_()`
 
-`Mapv_()` is the same action as `Map_()` except retruning a vector instead of a list.  
-That means `Mapv_()` is a shortcut of `unlist(Map_(...))`.
+`Mapv_()` is the same action as `Map_()` except returning a vector instead of a list.  
+It means `Mapv_()` is a shortcut of `unlist(Map_(...))`.
 
 
 ```r
