@@ -101,7 +101,7 @@ devtools::install_github("hoxo-m/lambdaR")
 ## 3. Basic of lambda expressions in `lambdaR`
 
 Lambda expressions in `lambdaR` are basically the same in Python except that we don't need to write `lambda`.  
-That has input variables and body of the function, and these are separated by a colon `:`.
+It has input variables and body of the function, and these are separated by a colon `:`.
 
 For example, lambda expressions in Python are like below.
 
