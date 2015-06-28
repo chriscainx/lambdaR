@@ -23,7 +23,7 @@ Filter(function(x) x %% 2 == 0, 1:10)
 You need to pass a function to higher-order functions.  
 In above, the higher-order function is `Filter` and the passed function is `function(x) x %% 2 == 0`.
 
-In such case, **lambda expressions** is very useful on some other languages.
+In such case, **lambda expressions** are very useful in some other languages.  
 Lambda expressions make a function description more concise.
 
 In Python, you can describe a function to pass like `lambda x: x % 2 == 0`.
@@ -40,16 +40,16 @@ In Scala, you can describe a function to pass like `x => x % 2 == 0`.
 (1 to 10).filter(x => x % 2 == 0)
 ```
 
-In Scala, lambda expressions can be more concise by using placeholders `_`.
+In Scala, lambda expressions may be more concise by using placeholders `_`.
 
 ```scala
 // Scala - extract even numbers from 1 to 10
 (1 to 10).filter(_ % 2 == 0)
 ```
 
-The **lambdaR** packagae is created to provide lambda expressions to R.  
+The **lambdaR** packagae is created to provide lambda expressions into R.  
 
-By this package, you can use Python-like lambda expressions in R.
+By using this package, you can use Python-like lambda expressions in R.
 
 
 ```r
@@ -98,14 +98,33 @@ install.packages("devtools") # if you have not installed "devtools" package
 devtools::install_github("hoxo-m/lambdaR")
 ```
 
-## 3. Basic
+## 3. Basic of lambda expressions in `lambdaR`
 
-`lambdaR` package provides the `lambda()` function that recieves a lambda expression and returns a function.
+Lambda expressions in `lambdaR` are basically the same in Python except that we don't need to write `lambda`.  
+That has input variables and body of the function, and these are separated by a colon `:`.
+
+For example, lambda expressions in Python are like below.
+
+```python
+lambda x: x + 1
+lambda x,y: x + y
+lambda x,y,z: x + y + z
+```
+
+The corresponded lambda expressions in `lambdaR` are the next.
+
+```python
+x: x + 1
+x,y: x + y
+x,y,z: x + y + z
+```
+
+`lambdaR` package provides the `lambda()` function that recieves a lambda expression and returns a function object.
 
 
 ```r
-increment <- lambda(x: x + 1)
-increment
+# increment function
+lambda(x: x + 1)
 ```
 
 ```
@@ -114,8 +133,16 @@ increment
 ```
 
 ```r
-add <- lambda(x,y: x + y)
-add
+lambda(x: x + 1)(1)
+```
+
+```
+## [1] 2
+```
+
+```r
+# add funtion
+lambda(x,y: x + y)
 ```
 
 ```
@@ -123,19 +150,73 @@ add
 ## x + y
 ```
 
+```r
+lambda(x,y: x + y)(1, 2)
+```
+
+```
+## [1] 3
+```
+
+```r
+# because the results are normal functions, 
+# you can assign it to a varible and use it
+subtract <- lambda(x,y: x - y)
+subtract(7, 3)
+```
+
+```
+## [1] 4
+```
+
+You can also write multi-line lambda expressions.
+
+
+```r
+head_and_tail <- lambda(df, n: {
+  H <- head(df, n)
+  T <- tail(df, n)
+  rbind(H, T)
+})
+head_and_tail
+```
+
+```
+## function (df, n) 
+## {
+##     H <- head(df, n)
+##     T <- tail(df, n)
+##     rbind(H, T)
+## }
+```
+
+```r
+head_and_tail(iris, 3)
+```
+
+```
+##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 1            5.1         3.5          1.4         0.2    setosa
+## 2            4.9         3.0          1.4         0.2    setosa
+## 3            4.7         3.2          1.3         0.2    setosa
+## 148          6.5         3.0          5.2         2.0 virginica
+## 149          6.2         3.4          5.4         2.3 virginica
+## 150          5.9         3.0          5.1         1.8 virginica
+```
+
 `lambda()` is a very simple function, but we can use it to various applications.  
 `lambda()` allows to redefine higher-order functions to enable using lambda expressions.
 
 ## 4. Application
 
-We redefined higher-order functions:
+We redefined six higher-order functions.
 
-- `Filter()` to `Filter_()`,
-- `Map()` to `Map_()`,
-- `Reduce()` to `Reduce_()`,
-- `Find()` to `Find_()`,
-- `Position()` to `Position_()`,
-- `Negate()` to `Negate_()`.
+- `Filter()` to `Filter_()`
+- `Map()` to `Map_()`
+- `Reduce()` to `Reduce_()`
+- `Find()` to `Find_()`
+- `Position()` to `Position_()`
+- `Negate()` to `Negate_()`
 
 You can input lambda expressions to these functions.
 
@@ -401,3 +482,9 @@ That means `Mapv_()` is a shortcut of `unlist(Map_(...))`.
 ```
 
 Of course, there is also `Map2v_()`.
+
+## 9. Related work
+
+- [lambda.r: Modeling Data with Functional Programming](http://cran.r-project.org/web/packages/lambda.r/)
+- [purrr by Hadley Wickham](https://github.com/hadley/purrr)
+- [rlist by Kun Ren](http://renkun.me/rlist/)
