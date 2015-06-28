@@ -8,7 +8,7 @@ Koji MAKIYAMA
 In recent years, the concepts of functional programming have widely spread.  
 R also has common higher-order functions in functional programming languages(See [`help(Map)`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/funprog.html) or [excellent article](http://www.johnmyleswhite.com/notebook/2010/09/23/higher-order-functions-in-r/)).
 
-Usagae of the higher-order functions is like below.
+Usage of the higher-order functions is like below.
 
 
 ```r
