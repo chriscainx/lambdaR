@@ -204,8 +204,8 @@ head_and_tail(iris, 3)
 ## 150          5.9         3.0          5.1         1.8 virginica
 ```
 
-`lambda()` is a very simple function, but we can use it to various applications.  
-`lambda()` allows to redefine higher-order functions to enable using lambda expressions.
+`lambda()` is a very simple function, but we can use it for various applications.  
+`lambda()` is available to redefine higher-order functions to enable using lambda expressions.
 
 ## 4. Application
 
