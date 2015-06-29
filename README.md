@@ -1,5 +1,5 @@
 # lambdaR - Novel lambda expressions in R
-Koji MAKIYAMA  
+Koji MAKIYAMA (@hoxo_m)  
 
 
 
@@ -26,14 +26,14 @@ In above, the higher-order function is `Filter` and the passed function is `func
 In such case, **lambda expressions** are very useful in some other languages.  
 Lambda expressions make a function description more concise.
 
-In Python, you can describe a function to pass like `lambda x: x % 2 == 0`.
+In Python, you can describe a function to pass, like `lambda x: x % 2 == 0`.
 
 ```python
 # Python - extract even numbers from 1 to 10
 filter(lambda x: x % 2 == 0, range(1, 11))
 ```
 
-In Scala, you can describe a function to pass like `x => x % 2 == 0`.
+In Scala, you can describe a function to pass, like `x => x % 2 == 0`.
 
 ```scala
 // Scala - extract even numbers from 1 to 10
@@ -72,7 +72,7 @@ Filter_(1:10, ._ %% 2 == 0)
 ## [1]  2  4  6  8 10
 ```
 
-By using the pipe operator `%>%` in `dplyr`(or `magrittr`), you can write the code more Scala-like.
+By using the pipe-operator `%>%` in `dplyr`(or `magrittr`), you can write the code more Scala-like.
 
 
 ```r
@@ -235,20 +235,30 @@ You can input lambda expressions to these functions.
 
 
 ```r
-1:10 %>% Map_(x: x ** 2) %>% unlist
+1:3 %>% Map_(x: x ** 2)
 ```
 
 ```
-##  [1]   1   4   9  16  25  36  49  64  81 100
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 4
+## 
+## [[3]]
+## [1] 9
 ```
+
+`Map_()` returns a list.  
+If you want to get the result as a vector, you can use `Mapv_()`.
 
 
 ```r
-list(1:5, 6:10) %>% Map2_(x,y: x + y) %>% unlist
+1:3 %>% Mapv_(x: x ** 2)
 ```
 
 ```
-## [1]  7  9 11 13 15
+## [1] 1 4 9
 ```
 
 ### Reduce_()
@@ -423,7 +433,7 @@ Filter_ <- function(data, ...) {
 ```
 
 Lambda expressions in `LambdaR` is implimented by `...`.  
-The `Filter_()` can accept lambda expressions.
+The `Filter_()` becomes to accept lambda expressions.
 
 ## 8. Miscellaneous
 
@@ -481,7 +491,43 @@ It means `Mapv_()` is a shortcut of `unlist(Map_(...))`.
 ## [1] 1 4 9
 ```
 
-Of course, there is also `Map2v_()`.
+### `Map2_()`
+
+`Map2_()` is available for multiple-input.
+
+
+```r
+list(1:3, 4:6) %>% Map2_(x,y: x + y)
+```
+
+```
+## [[1]]
+## [1] 5
+## 
+## [[2]]
+## [1] 7
+## 
+## [[3]]
+## [1] 9
+```
+
+
+```r
+list(1:3, 4:6, 7:9) %>% Map2_(x,y,z: x + y + z)
+```
+
+```
+## [[1]]
+## [1] 12
+## 
+## [[2]]
+## [1] 15
+## 
+## [[3]]
+## [1] 18
+```
+
+Of course, `Map2v_()` is also available.
 
 ## 9. Related work
 
