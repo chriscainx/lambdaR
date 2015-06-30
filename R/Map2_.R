@@ -7,7 +7,7 @@
 #'
 #'@export
 Map2_ <- function(data, ...) {
-  if(!is.list(data)) data <- list(data)
+  data <- unname(data)
   func <- lambda(...)
   args <- c(f=func, data)
   do.call(Map, args)

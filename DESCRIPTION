@@ -1,8 +1,8 @@
 Package: lambdaR
 Type: Package
 Title: Novel lambda expressions in R
-Version: 2.0.0
-Date: 2015-06-27
+Version: 2.0.1
+Date: 2015-06-30
 Author: Koji MAKIYAMA(@hoxo_m)
 Maintainer: Koji MAKIYAMA <hoxo.smile@gmail.com>
 Description: Novel lambda expressions in R
