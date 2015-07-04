@@ -133,7 +133,7 @@ head_and_tail(iris, 3)
 ```
 
 `lambda()` is a very simple function, but we can use it for various applications.  
-`lambda()` is available to redefine higher-order functions to enable using lambda expressions.
+`lambda()` enables to redefine higher-order functions to enable using lambda expressions.
 
 ## 4. Application
 
