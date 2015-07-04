@@ -24,7 +24,7 @@ You need to pass a function to higher-order functions.
 In above, the higher-order function is `Filter` and the passed function is `function(x) x %% 2 == 0`.
 
 In such case, **lambda expressions** are very useful in some other languages.  
-Lambda expressions make a function description more concise.
+Lambda expressions make description of functions more concise.
 
 In Python, you can describe a function to pass, like `lambda x: x % 2 == 0`.
 
@@ -47,9 +47,9 @@ In Scala, lambda expressions may be more concise by using placeholders `_`.
 (1 to 10).filter(_ % 2 == 0)
 ```
 
-The **lambdaR** package is created to provide lambda expressions into R.  
+The package **lambdaR** have been created to provide lambda expressions into R.  
 
-By using this package, you can use Python-like lambda expressions in R.
+By using the package, you can use Python-like lambda expressions in R.
 
 
 ```r
@@ -90,7 +90,7 @@ The source code for `lambdaR` package is available on GitHub at
 
 - https://github.com/hoxo-m/lambdaR
 
-You can install the pakage from there.
+You can install the package from there.
 
 
 ```r
@@ -119,7 +119,7 @@ x,y: x + y
 x,y,z: x + y + z
 ```
 
-`lambdaR` package provides the `lambda()` function that recieves a lambda expression and returns a function object.
+`lambdaR` package provides the `lambda()` function that recieves a lambda expression and returns the corresponded function object.
 
 
 ```r
@@ -419,7 +419,7 @@ square <- lambda(._ ** 2)
 ## [1] 220
 ```
 
-## 7. How to redefine a function
+## 7. How to redefine functions
 
 It is very easy to create a function that accepts lambda expressions.  
 For example, let's redefine `Filter()`.
@@ -525,6 +525,25 @@ list(1:3, 4:6, 7:9) %>% Map2_(x,y,z: x + y + z)
 ## 
 ## [[3]]
 ## [1] 18
+```
+
+It can be used for `data.frame` objects.
+
+
+```r
+df <- data.frame(x=1:3, y=4:6)
+df %>% Map2_(x,y: x + y)
+```
+
+```
+## [[1]]
+## [1] 5
+## 
+## [[2]]
+## [1] 7
+## 
+## [[3]]
+## [1] 9
 ```
 
 Of course, `Map2v_()` is also available.
