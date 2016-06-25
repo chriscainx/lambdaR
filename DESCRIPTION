@@ -1,15 +1,15 @@
 Package: lambdaR
 Type: Package
 Title: Novel lambda expressions in R
-Version: 2.0.1
-Date: 2015-06-30
-Author: Koji MAKIYAMA(@hoxo_m)
-Maintainer: Koji MAKIYAMA <hoxo.smile@gmail.com>
-Description: Novel lambda expressions in R
+Version: 2.0.1.9000
+Authors@R: person("Koji", "Makiyama", , "hoxo.smile@gmail.com", c("aut", "cre"))
+Description: Novel lambda expressions in R.
 License: MIT + file LICENSE
 Imports:
     lazyeval,
-    stringr
+    stringr,
+    utils
 Suggests:
     dplyr,
     testthat
+RoxygenNote: 5.0.1

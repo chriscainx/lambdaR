@@ -1,7 +1,11 @@
-# lambdaR - Novel lambda expressions in R
+# lambdaR: Novel lambda expressions in R
 Koji MAKIYAMA (@hoxo_m)  
 
 
+
+[![Travis-CI Build Status](https://travis-ci.org/hoxo-m/lambdaR.svg?branch=master)](https://travis-ci.org/hoxo-m/lambdaR)
+[![CRAN Version](http://www.r-pkg.org/badges/version/lambdaR)](http://cran.rstudio.com/web/packages/lambdaR)
+[![Coverage Status](https://coveralls.io/repos/github/hoxo-m/lambdaR/badge.svg?branch=master)](https://coveralls.io/github/hoxo-m/lambdaR?branch=master)
 
 ## 1. Overview
 

@@ -1,9 +1,9 @@
 #'Lambda function
 #'
-#'@param ... lambda expression.
-#'@param envir environment.
+#' @param ... lambda expression.
+#' @param envir environment.
 #'
-#'@export
+#' @export
 lambda <- function(..., envir = parent.frame()) {
   args <- lazyeval::lazy_dots(...)
   args_len <- length(args)
@@ -57,8 +57,8 @@ lambda_default <- function(...) {
   if(length(args) == 0) stop("No lambda expression.")
   envir <- args[[1]]$env
   args <- Map(function(x) x$expr, args)
-  vars <- unlist(Map(as.character, head(args, -1)))
-  last_arg <- tail(args, 1)[[1]]
+  vars <- unlist(Map(as.character, utils::head(args, -1)))
+  last_arg <- utils::tail(args, 1)[[1]]
   last_arg <- as.character(as.expression(last_arg))
   last_arg <- stringr::str_split(last_arg, pattern = ":", n = 2)[[1]]
   if(length(last_arg) != 2) stop("Invalid lambda expression.")
